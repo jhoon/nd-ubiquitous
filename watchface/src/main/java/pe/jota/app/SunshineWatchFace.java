@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pe.jota.sunshinewatchface;
+package pe.jota.app;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
