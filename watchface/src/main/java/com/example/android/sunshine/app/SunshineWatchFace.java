@@ -219,6 +219,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
 
             // TODO: Draw the date "Fri, Jul 14 2015" as the time subtitle
+            canvas.drawText("Fri, Jul 14 2015", mXOffset,
+                    mYOffset + mTextPaint.getTextSize(), mTextPaint);
 
             // TODO: Draw a short line (as a separator)
 
