@@ -211,11 +211,18 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             canvas.drawRect(0, 0, bounds.width(), bounds.height(), mBackgroundPaint);
 
             // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
+            // TODO: only needs HH:MM format, though HH should be in bold
             mTime.setToNow();
             String text = mAmbient
                     ? String.format("%d:%02d", mTime.hour, mTime.minute)
                     : String.format("%d:%02d:%02d", mTime.hour, mTime.minute, mTime.second);
             canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+
+            // TODO: Draw the date "Fri, Jul 14 2015" as the time subtitle
+
+            // TODO: Draw a short line (as a separator)
+
+            // TODO: Draw the weather icon, min temp and max temp
         }
 
         /**
