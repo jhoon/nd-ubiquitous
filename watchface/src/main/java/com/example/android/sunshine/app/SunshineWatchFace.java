@@ -353,22 +353,6 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
          * @param asset the asset to be converted
          * @return a Bitmap
          */
-//        private Bitmap loadBitmapFromAsset(Asset asset) {
-//            if (asset == null) {
-//                throw new IllegalArgumentException("Asset should not be null");
-//            }
-//
-//            InputStream assetInputStream = Wearable.DataApi.getFdForAsset(
-//                    mGoogleApiClient, asset).await().getInputStream();
-//
-//            if (assetInputStream == null) {
-//                Log.d(TAG, "Asset not found.");
-//                return null;
-//            }
-//
-//            return BitmapFactory.decodeStream(assetInputStream);
-//        }
-
         public Bitmap loadBitmapFromAsset(Asset asset) {
             if (asset == null) {
                 throw new IllegalArgumentException("Asset must be non-null");
