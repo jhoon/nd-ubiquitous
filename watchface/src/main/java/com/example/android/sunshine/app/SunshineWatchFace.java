@@ -35,6 +35,9 @@ import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -50,7 +53,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
      * Update rate in milliseconds for interactive mode. We update once a second since seconds are
      * displayed in interactive mode.
      */
-    private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
+    private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(30);
 
     /**
      * Handler message id for updating the time periodically in interactive mode.
@@ -75,8 +78,12 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         boolean mRegisteredTimeZoneReceiver = false;
 
+        SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
+
         Paint mBackgroundPaint;
         Paint mTextPaint;
+        Paint mDateTextPaint;
+        Paint mTemperaturePaint;
 
         boolean mAmbient;
 
@@ -108,6 +115,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
             mTextPaint = new Paint();
             mTextPaint = createTextPaint(resources.getColor(R.color.digital_text));
+            mDateTextPaint = createTextPaint(resources.getColor(R.color.digital_text_dark));
+            mTemperaturePaint = createTextPaint(resources.getColor(R.color.digital_text_dark));
 
             mTime = new Time();
         }
@@ -173,8 +182,11 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
             float textSize = resources.getDimension(isRound
                     ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
+            float dateTextSize = resources.getDimension(R.dimen.digital_date_text_size);
 
             mTextPaint.setTextSize(textSize);
+            mDateTextPaint.setTextSize(dateTextSize);
+            mTemperaturePaint.setTextSize(dateTextSize);
         }
 
         @Override
@@ -213,18 +225,22 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
             // TODO: only needs HH:MM format, though HH should be in bold
             mTime.setToNow();
-            String text = mAmbient
-                    ? String.format("%d:%02d", mTime.hour, mTime.minute)
-                    : String.format("%d:%02d:%02d", mTime.hour, mTime.minute, mTime.second);
+            String text = String.format("%d:%02d", mTime.hour, mTime.minute);
             canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
 
-            // TODO: Draw the date "Fri, Jul 14 2015" as the time subtitle
-            canvas.drawText("Fri, Jul 14 2015", mXOffset,
-                    mYOffset + mTextPaint.getTextSize(), mTextPaint);
+            // Draw the date as the time subtitle in the format "Fri, Jul 14 2015"
+            String date = mDateFormat.format(new Date());
+            canvas.drawText(date, mXOffset,
+                    mYOffset + mTextPaint.getTextSize(), mDateTextPaint);
 
             // TODO: Draw a short line (as a separator)
 
-            // TODO: Draw the weather icon, min temp and max temp
+            // TODO: Draw the weather icon
+
+
+            // Draw min temp and max temp
+            canvas.drawText("Min Max", mXOffset,
+                    mYOffset + mTextPaint.getTextSize() + mDateTextPaint.getTextSize(), mTemperaturePaint);
         }
 
         /**
